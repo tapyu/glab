@@ -1,0 +1,475 @@
+#############################################################################
+# Copyright: gAGE/UPC & ESA
+# Project: EDUNAV GNSS Lab Tool
+# Authors: Adria Rovira-Garcia (group of Astronomy and GEomatics - gAGE/UPC)
+#          Pere Ramos-Bosch (group of Astronomy and GEomatics - gAGE/UPC)
+# Curator: Adria Rovira-Garcia ( gAGE/UPC )
+# Developer: Yixie Shao ( gAGE/UPC )
+#            Deimos Ibanez Segura ( gAGE/UPC )
+#          glab.gage @ upc.edu           
+# File: graph.py
+# Code Management Tool File Version: 5.2  Revision: 0
+# Date: 2018/03/09
+#############################################################################
+
+
+GRAPHIC GENERAL OPTIONS (default options):
+
+  The General Options are the ones that can be specified once per graphic,
+  and will affect the entire graphic window:
+  
+  -h, --help                    Show this help message and exit
+  
+  -t, --title, --tit            Set the title of the Graphic
+  
+  --Xlabel, --xlab, --xl        Set the x-axis label
+  
+  --Ylabel, --ylab, --yl        Set the y-axis label
+  
+  --Xmin, --xmin, --xn          The minimum value for the x axis to be plot, if 
+                                no value is provided, automatic limits are set.  
+                                
+  --Xmax, --xmax, --xx          The maximum value for the x axis to be plot, if 
+                                no value is provided, automatic limits are set.
+                                
+  --Ymin, --ymin, --yn          The minimum value for the y axis to be plot, if 
+                                no value is provided, automatic limits are set.
+                                
+  --Ymax, --ymax, --yx          The maximum value for the y axis to be plot, if 
+                                no value is provided, automatic limits are set. 
+
+  --Xticks, --xticks, --xt      Set the ticks for x axis. The values must be 
+                                given in this format: Xmin,Xmax,NumberOfTicks
+                                (this parameter is incompatible with --XticksStep
+                                and --XTicksList). See note below.
+
+  --Yticks, --yticks, --yt      Set the ticks for y axis. The values must be 
+                                given in this format: Ymin,Ymax,NumberOfTicks
+                                (this parameter is incompatible with --YticksStep
+                                and --YTicksList). See note below
+
+
+  --XticksStep, --xticksstep,   Set the ticks step for x axis (this parameter
+  --xts                         is incompatible with --Xticks and --XTicksList).
+
+  --YticksStep, --yticksstep,   Set the ticks step for y axis (this parameter
+  --yts                         is incompatible with --Yticks and --YTicksList).
+
+  --XTicksList, --xtickslist,   Set the list of ticks for x axis. The list does
+  --xtl                         not to be ordered and must be comma (',') separated. 
+                                (this parameter is incompatible --Xticks and --XticksStep).
+
+  --YTicksList, --ytickslist,   Set the list of ticks for y axis. The list does
+  --ytl                         not to be ordered and must be comma (',') separated. 
+                                (this parameter is incompatible --Yticks and --YticksStep).
+
+  --Ftitle, --ftitle, --ft      Add a fractional title to the upper left corner.
+
+  --wm, --watermark             Add a watermark with the given label.
+
+  --wmc, --watermarkcolor       Sets the watermark colour.
+                                The following colours are supported:
+                                'b'     blue
+                                'g'     green
+                                'r'     red
+                                'c'     cyan
+                                'm'     magenta
+                                'y'     yellow
+                                'k'     black [DEFAULT]
+                                'w'     white
+
+  --wms, --watermarksize        Set the size of the watermark (default is 8)
+
+  --wmp,--watermarkposition     Set the X and Y position of the watermark. The position
+                                must be given relative to the lower left corner of the plot,
+                                and  with the X and Y values given a comma separated string.
+                                For example, to set the default position of the watermark in
+                                SBAS plots (lower right corner), the parameter should be
+                                provided as ".87,.03"
+
+
+  --AdjustToMargin, --atm,      Expand the figure to fit the image margin.
+  --adjusttomargin
+
+  --no-lock-file                Do not create the ".plot.lock" file. This file is necessary
+                                to synchronize graph.py with the GUI, but not in command line.
+  
+
+  NOTE:  In '--Xticks' or '--Yticks' options, the maximum and minimum can be different from
+         the plot range (it is an independent range). The number of ticks (NumberOfTicks)
+         should be computed with the following formula:
+
+         NumberOfTicks = 1 + ToInteger((MaxTick-MinTick)/TickResolution)
+
+
+ 
+  Example:
+       graph.py -t "Graphic title" --xl "time (s)" --yl "Altitude [m]"
+      --xmin -3.0 --ymax 5.0 --xticks 0,24,7
+
+
+PLOT DEPENDENT OPTIONS (default options):
+
+  The Plot Dependent Options are specific to each plot.
+  One new plot is considered from the point that a '-f' or '--file' is found. 
+  All the options coming after this parameter belong to that specific plot.
+  
+  -f, --file                    Set the input file name for the specific plot.
+  
+  -x, -X, --Xcol                Set the source of the x axis: 
+                                -x 4 or -x '$4' : will take as x axis the 4th
+                                column of the input file.
+                                
+                                Operations can be done in this parameter, such as:
+                                -x '($4-$5)': This will take the difference between
+                                the 4th and the 5th column 
+                                
+                                Mathematical functions and constants are supported:
+                                -x '(math.sin($12*math.pi/180)'
+                                
+  -y, -Y, --Ycol                Set the source of the y axis
+                                Identical properties as x column
+
+                                
+  -c, --cond                    Specify the plotting condition:
+                                -c '($6>=10)' Include the 6th column if it is 
+                                equal or greater than 10
+                                
+                                -c '($1=="OUTPUT")' Include the 1st column by a specific
+                                string: surrounding the string by "  
+                                
+                                Mathematical functions, booleans and constants are supported:
+                                -c '($1=="POSTFIT")&(math.e($12+$5)>5.0)'
+
+                                NOTE: Windows users have to exchange the ' for " and the " for '
+                                      when specifying a condition. For example, the following
+                                      condition: 
+                                            -c '($1=="POSTFIT")&(math.e($12+$5)>5.0)'
+                                      is valid in Linux, but in Windows it shall be written like this:
+                                            -c "($1=='POSTFIT')&(math.e($12+$5)>5.0)"
+                                              
+                                
+  -l, --label, --plotlabel      Enables the label for the current plot
+
+  --npl, --numpointslabel       Set the number of points to be shown in the label.
+                                If no value is provided, it is set to 2 [DEFAULT]
+
+  --lp, --labelpos, --labelPos  Set the position of the label in the plot.
+                                The following values are supported:
+                                'tl'             top    left
+                                'tc'             top    center
+                                'tr'             top    right [DEFAULT]
+                                'bl'             bottom left
+                                'bc'             bottom center
+                                'br'             bottom right
+                                'cl'             center left
+                                'c'              center
+                                'cr'             center right
+                                'coordX,coordY'  user defined position 
+                                                  coordX values must be between [-0.05,1.3]
+                                                  coordY values must be between [-0.05,1.15]
+
+  -s, --style                   Sets the style for the current plot  
+                                The following styles are supported:
+                                '.'     circle marker [DEFAULT]
+                                '-'     solid line style
+                                '--'    dashed line style
+                                '-.'    dash-dot line style
+                                '.-'    dots joined with lines
+                                'o'     point marker
+                                's'     square marker
+                                'p'     pentagon marker
+                                '+'     plus marker
+                                'x'     x marker
+                                
+    For a full list of styles, see http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot
+                                
+  --color, --cl                 Sets the colour for the current plot
+                                The following colours are supported:
+                                'b'     blue [DEFAULT]
+                                'g'     green
+                                'r'     red
+                                'c'     cyan
+                                'm'     magenta
+                                'y'     yellow
+                                'k'     black
+                                'w'     white
+
+  --markersize, --ms            Sets the plot maker size 5 by [DEFAULT]
+
+  --linewidth, --lw             Sets the plot maker size 0 by [DEFAULT]
+  
+  -g, --grid                    Set the plot with grid by [DEFAULT]
+                                It could be turn off by 'off' or 'no'
+
+  Example:
+       graph.py -f /home/gLAB/Example -x '(math.sin($1*math.pi/180))' -y 2 
+       -l "Plot Label" --style p --color cyan   
+                                   
+
+                                
+
+MULTIPLE PLOTS:
+
+  Each graphic window can contain several plots. One new plot is considered 
+  from the point that a '-f' or '--file' is found:
+      Graphic General Options: will apply to all the plots present
+      Plot Dependent options: parameters specific to each plot.
+  
+  Example:
+       graph.py -f /home/gLAB/Example -x '1' -y '2' -f /home/gLAB/Example -x '2' -y '1'
+
+
+SAVE CURRENT GRAPHIC:
+
+  User can save the entire graphic window into the path specified. If no path 
+  is specified, it will be allocated in the current working directory.
+  The graphic output format is deduced from the extension of the file name, if no
+  extension is provided a 'png' extension type will be used: 
+                         
+  
+  --save, --sv                  Stores the graphic window given a file name. The graphic
+                                output format is deduced from the extension of the file name.
+                                Supported formats are: 
+                                emf, eps, jpeg, jpg, pdf, png [DEFAULT], ps, raw, rgba, svg, svgz.
+                                
+  Example:
+       graph.py -f /home/gLAB/Example -x 1 -y 2 --save Figure_Example
+       graph.py -f /home/gLAB/Example -x 1 -y 2 --sv /home/Desktop/Figure_Example.eps
+
+
+
+       
+STANFORD PLOT:
+
+  In this mode: 
+  
+  For GRAPHIC GENERAL OPTIONS, all the options work the same way as in the default plots,
+                               except the options "--Ftitle" (add a fractional title), "--xt" and "--yt" (for setting ticks) which are disabled. 
+                               
+  For PLOT DEPENDENT OPTIONS, the options "-f", "-x", "-y", "-c", "-g" work the same way as in the default plots,
+                              while the other options in this part are disabled in this mode.
+                              "-x" and "-y" options can also be written as "--error" and "--pl" respectively.
+                              
+  MULTIPLE PLOTS are disabled in this mode.
+  
+  For SAVE CURRENT GRAPHIC, it works the same way as for the other kind of plots.
+  
+  --stanford, --sf, --sp        Make a stanford plot.
+                                
+  --AL, --al                    Set the alarm limit for the protection level, if 
+                                no value is provided, AL is set to 40 [DEFAULT].                                              
+
+  --clean                       Make a stanford Plot without failure patches.
+
+  --xr,   --xresolution         Set the resolution in x-direction of the plot. 
+                                If no value is provided, it is set to 0.5 [DEFAULT].
+
+  --yr,   --yresolution         Set the resolution in y-direction of the plot. 
+                                If no value is provided, it is set to 0.5 [DEFAULT].
+
+  --percentileX, --percentilex  Show ticks where the percentiles 68, 95 and 99.9
+                                of the points are reached in the horizontal axis.
+
+  --percentileY, --percentiley  Show ticks where the percentiles 68, 95 and 99.9
+                                of the points are reached in the vertical axis.
+
+ Example:
+        graph.py -f /home/gLAB/Example -x 1 -y 2 --sf
+        
+
+STANFORD-ESA PLOT:
+
+  In this mode: 
+  
+  The input file should have this fixed format (this is gLAB's output format):
+
+  The first three lines have the header with this format (numerical values can vary according to the plot):
+  
+  #XSTEP  YSTEP  XMAX  YMAX
+   0.100  0.100  50.0  50.0
+  # XPOS   YPOS  NUM_HOR  NUM_VER
+
+  Since the fourth row, each row should provide the values: positioning error, protection level, 
+    number of horizontal values (at the given coordinate), number of vertical values
+
+  For GRAPHIC GENERAL OPTIONS, all the options work the same way as in the default plots
+                               except the option "--Ftitle" (add a fractional title),  "--xt" and "--yt" (for setting ticks) which are disabled.
+                               
+  For PLOT DEPENDENT OPTIONS, the options "-f" works the same way as in the default plots,
+                              while the other options in this part are disabled in this mode.
+                              
+  MULTIPLE PLOTS are disabled in this mode.
+  
+  For SAVE CURRENT GRAPHIC, since it has two plots, then two save paths should be provided. If only one path is provided,
+                            only the vertical plot will be saved.
+
+  --stanfordESA, --sfesa, --spesa        Make a stanford-ESA plot.
+
+ Examples: 
+       graph.py -f /home/gLAB/Example --sfesa --sv /home/Desktop/Figure_Vertical.eps --sv /home/Desktop/Figure_Horizontal.eps
+                                
+       graph.py -f /home/gLAB/Example --sfesa
+
+
+WORLD MAP / STATION NAME MAP / WORST INTEGRITY RATIO PLOTS:
+  In this mode: One, two or three plots can be generated depending on the input.
+
+  The input file should contain the following fields: station name, geodetic coordinates (in degrees) and the values to be plotted.
+  Parameter "-x": longitude (degrees)
+  Parameter "-y": latitude (degrees)
+
+  For GRAPHIC GENERAL OPTIONS, all the options work as in the default plots
+                               except:
+                                     the setting of "--xmax","--xmin","--ymax","--ymin"  only works 
+                                     properly with the 'Equidistant Cylindrical Projection'.
+
+                                     the option "--Ftitle", add a fractional title, is disabled. 
+                                    
+                                     the options "--xt" and "--yt" (for setting ticks) which are disabled.
+
+                                     the option "--AdjustToMargin" will only take effect on station maps.
+                                 
+  For PLOT DEPENDENT OPTIONS, the options "-f", "-x", "-y", "--ms" work as in the default plots,
+                              while the other options in this part are blocked in this mode.
+  
+  For SAVE CURRENT GRAPHIC:
+                               In the case of one plot, it works the same way as for default plots
+                               In the case of two plots, two save paths should be provided. If only one path is provided,
+                               only the vertical map will be saved.
+                               In the case of three plots, three save paths should be provided. If only one path is provided,
+                               only the vertical map will be saved. If only two path are provided, only the vertical and
+                               horizontal maps will be saved.
+
+       
+  --map --Map                   Make a world map plot with the given values.
+ 
+  --wir, --WIR                  Make a worst integrity ratio plot. This is a world map, but
+                                sets a fixed scale (with a minimum of 0 and a maximum of 2 independently of user input), 
+                                and a fixed set of colors for the colourbar.
+
+  --rv, --ratioV, --RV          Set the source of the vertical values or worst integrity ratio.
+                                Identical properties as x,y column in the default plots.
+
+  --rh, --ratioH, --RH          Set the source of the horizontal values or worst integrity ratio.
+                                Identical properties as x,y column in the default plots.
+
+  --miv, --MIV                  Set the source of the vertical MIs.
+                                Identical properties as x,y column in the default plots.
+
+  --mih, --MIH                  Set the source of the horizontal MIs.
+                                Identical properties as x,y column in the default plots.
+
+  --sn, --staName, --SN         Set the source for the station name. Setting this value will make a new
+                                  plot with the name of the stations in their coordinates.
+
+  --projection, --pj            Set the projection of the map. 
+                                'Equidistant Cylindrical Projection' is set as [DEFAULT]
+                                User can set the value of projection as 'lcc' or 'lambert' 
+                                to switch to "Lambert Conformal Projection".
+
+  --cbarMin,--cbarmin,--cmin    The minimum value for the colourbar, if no value is provided,
+                                automatic limits are set.  
+
+  --cbarMax,--cbarmax,--cmax    The maximum value for the colourbar, if no value is provided,
+                                automatic limits are set. 
+
+  --cbarInterval,--cbarN,--cn   The value of interval for colourbar's tick, if no value is provided,
+                                8 is set as [DEFAULT]
+
+  --continentColor,--cc         The continent's colour, if no value is provided, 'yellow' is 
+                                set as [DEFAULT]
+
+  --lakeColor, --lc             The lake's colour, if no value is provided, 'white' is 
+                                set as [DEFAULT]
+
+  --boundaryColor,--bc          The continent's colour, if no value is provided, 'white' is 
+                                set as [DEFAULT]
+
+  --mapres, --MapResolution     Sets the world map resolution. Valid values are 'c', 'l' [DEFAULT],
+                                  'i', 'h' or 'f' (ordered from lower to higher resolution).
+
+ NOTES on World Maps / Worst Integrity Ratio Maps: 
+    If only one of the parameters '--rh' or '--rv' is given, only the horizontal or vertical plots will be shown. 
+    If both parameters '--rh' or '--rv' are given, two plots will be shown.
+    If any of '--mih' or '--miv' parameters are given. a coloured ring around the coloured circles will appear on the corresponding plot.
+    If only '--sn' parameter is given, a single plot with the station map will be shown.
+    It is recommended to save station name maps in pdf format, as station names will be searchable inside the file.
+    An horizontal label will only fit if no MIs are plotted, as the second colorbar for the MIs will occupy the free space.
+
+ Example:
+       Generate one plot:      graph.py -f /home/gLAB/Example --wir -x 5 -y 7 --rh 11 
+       Generate two plots:     graph.py -f /home/gLAB/Example --wir -x 5 -y 7 --rh 11 --rv 13 --mih 17 --grid off
+       Generate three plots:   graph.py -f /home/gLAB/Example --wir -x 5 -y 7 --rh 11 --rv 13 --sn 3 --mih 17 --miv 19 
+
+ Example for saving the plots: 
+       graph.py -f /home/gLAB/Example --wir  -x 5 -y 7 --rv 13 --miv 19 --rh 11 --mih 17 --xmin -30 --xmax 40 --ymin 25 --ymax 75  --sv /home/Desktop/Figure_V.eps --sv /home/Desktop/Figure_H.eps --sv /home/Desktop/Figure_Station_Map.pdf
+
+SBAS AVAILABILITY AND CONTINUITY PLOT:
+
+  In this mode: 
+  
+  The input file should have this fixed format (this is gLAB's output format):
+  
+  The first three lines have the header with this format (numerical values can vary according to the plot):
+    For SBAS Availability map:
+       #MINLAT MAXLAT  MINLON  MAXLON RESOLUTION REC-HEIGHT    HAL    VAL DoY YEAR NUMEPOCHS GEO-PRN ELEV-MASK
+         25.00  70.00  -30.00   40.00       1.00       0.00  40.00  50.00 315 2016     86400     120      5.00
+       #  LAT     LON AVAIL%
+
+    For SBAS Continuity Risk map:
+       #MINLAT MAXLAT  MINLON  MAXLON RESOLUTION REC-HEIGHT    HAL    VAL DoY YEAR NUMEPOCHS GEO-PRN ELEV-MASK WINDOW_SIZE
+         25.00  70.00  -30.00   40.00       1.00       0.00  40.00  50.00 315 2016     86400     120      5.00          15
+       #  LAT     LON      CONT-RISK
+
+    For SBAS Ionosphere Availability map:
+       #MINLAT MAXLAT  MINLON  MAXLON RESOLUTION DoY YEAR NUMEPOCHS GEO-PRN
+         65.00  73.00   30.00   40.00       0.10 255 2016       288     120
+       #  LAT     LON AVAIL%
+        
+  Graph program will automatically detect which type of input file is given using the header, 
+  and will read the map size from the header.
+
+  Since the fourth row, each row should provide the following values: latitude, longitude, value
+
+  For GRAPHIC GENERAL OPTIONS, only the option to set the title "--title" is enabled. If non set,
+                               a title will be set automatically. The plot region will be
+                               automatically set from the header values.
+                               
+  For PLOT DEPENDENT OPTIONS, the options "-f" works the same way as in the default plots,
+                              while the other options in this part are disabled in this mode.
+                              
+  MULTIPLE PLOTS are disabled in this mode.
+  
+  For SAVE CURRENT GRAPHIC,   it works the same way as for the default plots.
+
+  --sbas, --SBAS                      Make a SBAS map
+
+  --nocontourlines, --NoContourLines  Do not show contour lines in Availability and Continuity Risk maps
+
+  --nocbarpercent, --NoCbarPercent    Do not put the '%' sign in top of the colorbar
+
+  --CbarLabel, --cbarlabel            Add a label next to the colorbar
+
+  --SBASSystemname, --sbassystemname  Set the name of the SBAS system in the title, replacin the default
+                                      "SBAS" text in the default title.
+
+  --PRNtext, --prntext                Replace the "PRN <number>" text in the default title with the given
+                                      text. This is useful when the plot is from multiple PRNs, where the
+                                      default PRN is 0.
+
+  --PRNtextnewline, --prntextnewline  Move the "PRN <number>" to a newline below (instead of being next to
+                                        the alarm limits and the pixel resolution)
+
+  NOTE: If user sets a vertical label, the '--atm' option (adjust to margin) will be disabled in order to
+        fit the vertical label
+
+ Examples: 
+       graph.py -f /home/gLAB/Example --sbas --sv /home/Desktop/SBASAvailMap.eps
+                                
+       graph.py -f /home/gLAB/Example --SBAS
+ 
+
+
+Options:
+  -h, --help            show this help message and exit
