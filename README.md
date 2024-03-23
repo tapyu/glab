@@ -1,5 +1,7 @@
 # glab
-Interactive educational multipurpose package to process and analyse GNSS data.
+Interactive educational multipurpose package to process and analyse GNSS data. It contains:
+- The gLAB version 5.5.1. At the time I am writing it, it is the newest version. You can find all versions [here].
+- Tutorial homeworks, which was obtained from previous versions of gLAB and integrated to v5.5.1.
 
 ## Installing
 
@@ -25,3 +27,5 @@ Interactive educational multipurpose package to process and analyse GNSS data.
   - Antenna Phase Center (APC) -> `.atx.`
   - Precise receiver coordinates -> `.snx.`
 - `ntpd_tutX.sh`: Unix Shell script to run tutorial X. It basically creates `WORK/TUTX/`, and copies the config files from `PROG/TUTX/` and data files from `FILES/TUTX/` to it.
+
+[here]: https://gage.upc.edu/en/learning-materials/software-tools/glab-tool-suite-links/glab-download
