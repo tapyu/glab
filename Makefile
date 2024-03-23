@@ -1,5 +1,5 @@
 CC = gcc
-CXXFLAGS += -O3 -fno-stack-protector
+CXXFLAGS += -O3 -fno-stack-protector -fcommon
 #CXXFLAGS += -pedantic
 #CXXFLAGS += -Wall -Wextra -Wno-unused-parameter
 CXXFLAGS += -std=gnu99
