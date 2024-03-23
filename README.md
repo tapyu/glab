@@ -1,7 +1,6 @@
 # glab
 Interactive educational multipurpose package to process and analyse GNSS data.
 
-## Installing
+This branch contains the gLAB source code for version 5.5.1. You may this it [here].
 
-- To install `glab`, run `./install.sh`. It should generate `gLAB_linux` and `gLAB_linux_multithread`.
-- For 64-bits arch, use `gLAB_64`.
+[here]: https://gage.upc.edu/en/learning-materials/software-tools/glab-tool-suite-links/glab-download
