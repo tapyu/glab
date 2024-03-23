@@ -1,0 +1,685 @@
+<!This notice must be untouched at all times.
+
+   Author: 
+   ====================
+
+   Adria Rovira-Garcia 
+   group of Astronomy and GEomatics - gAGE / UPC
+   Technical University of Catalonia - UPC
+   adria.rovira @ ma4.upc.edu
+
+
+   File Description:
+   ====================
+   Title: GNSS Format Descriptions
+   Creation Date:    31/03/2010.
+   Last Modified:    31/12/2010.
+   The latest version is available at http://www.gage.es/gLAB
+   This HTML file version is released together with the Educational Book:
+       "Global Navigation Satellite Systems: Fundamentals, Algorithms and Laboratory Exercises"
+        Authors: J. Sanz, JM. Juan and M. Hernandez-Pajares.
+
+
+   Copyright & Licence:
+   ====================
+   
+   Copyright (c) 2010 gAGE.
+
+   This material authorship and Intellectual Property Rights are owned by the research group gAGE / UPC.
+   The HTML files are freely distributed and can be obtained either from the server http://www.gage.es/gLAB, or glab.gage @ upc.edu
+   Its reproduction is authorized, always in its totality, strictly respecting its contents and original format, and its non-for-profit making. 
+   Any partial reproduction should be previously authorized by gAGE, clearly indicating the reference. 
+   The author will thank the communication of any behavior violating the previous gratuitous and free distribution principles and referring to its authorship.
+
+>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Header: This is where all functions are stored not to interfere with page content-->
+<HEAD>
+	<!-- Title Shown in the Navigator -->
+	<TITLE>gAGE Learning Material </TITLE>
+
+	<!-- Text Configuration in an external file cointaining all different styles-->
+	<link rel="stylesheet" type="text/css" href="StyleSheet/HTML_Style.css" />
+
+	<!-- Tooltip Text Dictionary -->
+	<SCRIPT type="text/javascript">
+	<!---
+
+/*
+   <ul>
+	<li>Concept List 1: 
+		<ul>   
+			<li>First Concept to be developed blablabla blablabla </li>  
+			<li><B> I am the second, but more important</B> </li>  
+                        <li>Tres</li>   
+                </ul>
+        </li>
+
+	<li>Dos</li>
+	<li>Tres</li>
+	<li> <A HREF=#ENDOFPAGE>Get Me OUUUUT of here</A> </li>
+
+   </ul>
+	
+*/
+		/* GENERAL TOOLTIPS */
+		var RINEXTooltip = "<A class=\"TooltipTitle\">IONosphere Map EXchange Format (IONEX): </A>  <ul>  <li>Philosophy: <br>  The IONEX files follow the same aproach than the  <b> Receiver Independent Exchange Format </b> (RINEX), which first proposal was developed by the Astronomical Institute of the University of Berne for the easy exchange of the GPS data to be collected during the large European GPS campaign EUREF 89, which involved more than 60 GPS receivers of 4 different manufacturers. <br> <br> The governing aspect during the development was the fact that most geodetic processing software for GPS data use a well-defined set of observables: <ul> <li> <b>The carrier-phase measurement </b> at one or both carriers (actually being a measurement on the beat frequency between the received carrier of the satellite signal and a receiver-generated reference frequency). </li>  <li> <b>The pseudorange (code) measurement </b>, equivalent to the difference of the time of reception (expressed in the time frame of the receiver) and the time of transmission (expressed in the time frame of the satellite) of a distinct satellite signal.</li> <li>  The <b> observation </b> time being the reading of the receiver clock at the instant of validity of the carrier-phase and/or the code measurements.  </ul></li> <br> Usually the software assumes that the observation time is valid for both the phase AND the code measurements, AND for all satellites observed. Consequently all these programs do not need most of the information that is usually stored by the receivers: They need phase, code, and time in the above mentioned definitions, and some station-related information like station name, antenna height, etc.</li> <br>  <br><li>General Format: <br> The format has been optimized for mimimum space requirements independent from the number of different observation types of a specific receiver by indicating in the header the types of observations to be stored. In computer systems allowing variable record lengths the observation records may be kept as short as possible. Trailing blanks can be removed from the records. The maximum record length is 80 bytes per record. <br> <br> <ul> <li>All RINEX files start with a header section that contains global information for the entire file.</li>   <li> The header section contains header labels in columns 61-80 for each line.</li>  <li> These labels are mandatory and must appear exactly as given.</li> </ul> </li> </ul>  <b> Note: A collection of the formats currently used by the IGS can be found here: <A HREF='http://igscb.jpl.nasa.gov/components/formats.html'>http://igscb.jpl.nasa.gov/components/formats.html</A> </b>";
+
+ 
+		var HeaderLabelTooltip = "<A class=\"TooltipTitle\">Header Label: [MANDATORY] </A> <ul> <li>Description: <ul>  <li>All IONEX files start with a header section that contains global information for the entire file.</li>   <li> The header section contains header labels in columns 61-80 for each line.</li>  <li> These labels are mandatory and must appear exactly as given.</li> </ul> </li> <br> <li>Format:<ul>  <li>A20</li> </ul></li></ul>";
+
+		var HeaderLabelOptionalTooltip = "<A class=\"TooltipTitle\">Header Label: [OPTIONAL]</A> <ul> <li>Description: <ul>  <li>All IONEX files start with a header section that contains global information for the entire file.</li>   <li> The header section contains header labels in columns 61-80 for each line.</li>  <li> These labels must appear exactly as given.</li> </ul> </li> <br> <li>Format:<ul>  <li>A20</li> </ul></li></ul> <b>Note: this line is optional and may not appear in some IONEX files. </b>";
+
+		var EmptyFieldTooltip = "This field remains empty in this IONEX Version. ";
+
+		/* Line: IONEX VERSION / TYPE */
+		var VersionTooltip = "<A class=\"TooltipTitle\">Format Version: </A> <ul> <li>Description: <ul>  This field shows the version of the IONEX. </ul> </li> <br> <li>Format:<ul>  F8.1,12X </ul></li></ul>";
+
+		var FileTypeTooltip = "<A class=\"TooltipTitle\">File Type: </A> <ul> <li>Values: <ul>  <b>O</b> for Observation Data   <br> <b>N</b> for GPS Navigation Data <br> <b>R</b> for GLONASS Navigation Data <br> <b>M</b> for Metereological Data <br> <b>I</b> for Ionosphere Maps </ul> </li> <br> <li>Format:<ul>  A1,19X </ul></li></ul>";
+
+		var SatelliteSystemTooltip = "<A class=\"TooltipTitle\">Theoretical Model or Satellite System: </A> <ul> <li>Possible Values: <ul>  <b>- BEN</b> for BENt Model<br>  <b>- ENV</b> for ENVisat Satellite(s) <br>  <b>- ERS</b> for ERS Model <br>  <b>+ GEO</b> for GEOstationary Satellite(s) <br>  <b>- GLO</b> for GLOnass Satellite(s) <br>  <b>- GNS</b> for GNSs (GPS/GLONASS) Satellite(s) <br> <b>- GPS</b> for GPS Satellite(s)  <br> <b>- IRI</b> for IRI Satellite(s) <br>  <b>+ MIX</b> for MIXed  Satellites <br> <b>- NNS</b> for NNSs (Transit) Satellite(s)  <br> <b>- TOP</b> for TOPex/Poseidon Satellite(s)  </ul> </li> <br> <li>Format:<ul>  A3,17X </ul></li></ul> <b>Note: For techniques marked by a '+', description lines should be added indentifying the satellite(s) or roughly specifying the technique used. </b>";
+
+		/* Line: COMMENT */
+		var CommentTooltip = "<A class=\"TooltipTitle\">Comment Line: </A> <ul> <li>Description: <ul>  Any other information out of the standard is placed here. <br> Note that coment lines are not allowed right at the beginning of a file or within <b>TEC/RMS/HGT</b> data blocks: see <b> LAT/LON1/LON2/DLON/H </b> field.</ul> </li> <br> <li>Format:<ul>  A60 </ul></li></ul>";
+
+
+		/* Line: Line: PGM / RUN BY / DATE */
+	  	var PGMTooltip = "<A class=\"TooltipTitle\">Program Generator </A> <ul> <li>Description: <ul>  Name of the program creating current file. </ul> </li> <br> <li>Format:<ul>  A20 </ul></li></ul>";
+		
+		var RunByTooltip = "<A class=\"TooltipTitle\">Run By: </A> <ul> <li>Description: <ul>  Name of the agency creating current file. </ul> </li> <br> <li>Format:<ul>  A20 </ul></li></ul>";
+
+		var DateTooltip = "<A class=\"TooltipTitle\">Date: </A> <ul> <li>Description: <ul>  Date of file creation. </ul> </li> <br> <li>Format:<ul>  A20 </ul></li></ul>";
+
+		/* Line: DESCRIPTION */
+		var DescriptionTooltip = "<A class=\"TooltipTitle\">Description Line: </A> <ul> <li>Description: <ul>  It is highly recommended to give a brief description of the technique, model... used. <br> Please distinguish between description and pure comment.</ul> </li> <br> <li>Format:<ul>  A60 </ul></li></ul>";
+
+		/* Line: Line: gLAB / gAGE COMMENT */
+		var gLABgAGETooltip = "<A class=\"TooltipTitle\">File Information: </A>  <ul>  <li>gLAB: <br> The GNSS-Laboratory Tool Suite <b> (gLAB) </b> is an interactive educational multipurpose package to process and analyse GNSS data. It has been developed for the <b> European Space Agency (ESA) </b> <A HREF='http://www.esa.int'> http://www.esa.int</A>. The first release of this software package allows processing only GPS data, but it is prepared to incorporate future module updates, such as an expansion to Galileo and GLONASS systems, EGNOS and differential processing. <br> <br>This software package is targeting the following groups of users: <ul> <li> <b>Education professionals </b> aiming to teach GNSS from both a theoretical and practical points of view. </li>  <li> <b>Standalone students and professionals </b> with basic knowledge on GNSS as a self-learning tool. </li> <li>  <b> Professionals </b> with more in deep knowledge on GNSS who want an easy and user-friendly tool with precise positioning capability.</li></ul> <br> From an operative point view, this tool is conceived as a software package to support a practical GNSS course, where the fundamentals introduced in the theory are experimented through guided exercises. In this way, the tool is conceived for being used: <ul> <li> As part of a <b> GNSS course </b> with practical exercises integrated following a manual. </li>  <li> Experimenting around with <b> contextual help on hyperlinks</b> for more information. </li> <li>  To process <b>  RINEX data </b> and obtain both GPS standalone or Precise Point Positioning (PPP) solutions.</li></ul> <br> The gLAB tool is distributed within a learning material package containing the following components: <ul> <li> <b>Software : </b> A binary which will be able to read GPS RINEX data, process it and show the results in the form of data files and graphics. The processing options will be fully parametrizable through a GUI that will ease to understand the tool and its different options. </li>  <li> <b> Tutorial : </b> A book containing the GNSS fundamentals and several practical exercises covering from the basics of data processing, such as reading standard RINEX format to more complex processes, as positioning a rover and analysing the results.  </li> <li>  <b>  Data : </b> The data sets files used in the exercises.</li></ul> <br> The gLAB website :  <A HREF='http://gage14.upc.es/gLAB/'>http://www.gage.es/gLAB/</A> </li> <br> <li>Tooltips: <br> This file would have not been possible without including <b> Walter Zorn's </b> tooltips. <br> Source & Documentantion of the used tooltips :  <A HREF='http://www.walterzorn.com/tooltip/tooltip_e.htm'>http://www.walterzorn.com/tooltip/tooltip_e.htm</A> </li>  </ul>";
+
+		/* Line: EPOCH OF FIRST MAP */ 
+		var FirstYearObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Year </b> of first TEC map present in the file, in 4-digit-year. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var FirstMonthObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Month </b> of first TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var FirstDayObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Day </b> of first TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var FirstHourObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Hour </b> of first TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var FirstMinObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Minute </b> of first TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var FirstSecondObsTooltip ="<A class=\"TooltipTitle\"> Time of First TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Second </b> of first TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: EPOCH OF LAST MAP */  
+		var LastYearObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Year </b> of Last TEC map present in the file, in 4-digit-year. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var LastMonthObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Month </b> of Last TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var LastDayObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Day </b> of Last TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var LastHourObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Hour </b> of Last TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var LastMinObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Minute </b> of Last TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		var LastSecondObsTooltip ="<A class=\"TooltipTitle\"> Time of Last TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Second </b> of Last TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: INTERVAL */ 
+		var IntervalTooltip ="<A class=\"TooltipTitle\"> Time Interval: </A> <ul> <li>Description: <ul>  The interval in seconds between the TEC maps.   </ul> </li> <br> <li>Format:<ul> I6</ul></li>  </ul> <br> <b> Note: If 0 is specified, INTERVAL may be variable.</b>";
+
+
+		/* Line: # OF MAPS IN FILE  */ 
+		var MapNumberTooltip ="<A class=\"TooltipTitle\"> Number of Maps: </A> <ul> <li>Description: <ul>  Total number of <b>TEC/RMS/HGT</b> maps present in the current file.   </ul> </li> <br> <li>Format:<ul> I6</ul></li>  </ul> ";
+
+		/* Line: MAPPING FUNCTION  */
+		var MapFunctTooltip = "<A class=\"TooltipTitle\">Mapping Function: </A> <ul> <li>Mapping Function adopted for TEC determination: <ul>  <b>NONE</b> : No Mapping Function (MF) used (e.g. altimetry)<br>  <b>COSZ</b> : 1/cos(z) <br>  <b>QFAC</b> : Q-factor. <br> </ul> </li> <br> <li>Format:<ul>  A4 </ul></li></ul> <b>Note: Other techniques may be introduced. </b>";
+
+		/* Line: ELEVATION CUTOFF */
+		var ElevCutTooltip = "<A class=\"TooltipTitle\">Elevation Cut Off: </A> <ul> <li>Description: <ul>  Minimum elevation angle:  <ul>  <b>0.0</b> : If Unknown.<br>  <b>90.0</b> : For Altimetry. </ul> </ul> </li> <br> <li>Format:<ul>  F8.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul>";
+
+		/* Line: OBSERVABLES USED */ 
+		var ObserUsedTooltip ="<A class=\"TooltipTitle\"> Observables Used: </A> <ul> <li>Description: <ul>  One-line specification of the observable(s) used in the TEC computations.  </ul> </li> <br> <li>Format:<ul>  A60 </ul></li>  </ul> <br> <b>Note: Blank line for Theoretical Models </b>";
+		
+		/* Line: # OF STATIONS */ 
+		var NumberOfStatsTooltip ="<A class=\"TooltipTitle\"> Number of Stations: </A> <ul> <li>Description: <ul>  Number of contributing stations. </ul> </li> <br> <li>Format: <ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: # OF SATELLITES */ 
+		var NumberOfSatsTooltip ="<A class=\"TooltipTitle\"> Number of Satellites: </A> <ul> <li>Description: <ul> Number of contributing satellites. </ul> </li> <br> <li>Format: <ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: BASE RADIUS */  
+		var BaseRadiusTooltip = "<A class=\"TooltipTitle\">Base Radius: </A> <ul> <li>Description: <ul>  Mean Earth Radius or Bottom of Height Grid. </ul> </li> <br> <li>Format:<ul>  F8.1 </ul></li>   <br> <li>Units:<ul>  kilometers </ul></li> </ul> <br> <b>Example value: 6371 km or 6771 km</b>";
+
+		/* Line: MAP DIMENSION */   
+		var MapDimensionTooltip ="<A class=\"TooltipTitle\"> Map Dimension: </A> <ul> <li>Description: <ul>  Dimension of <b>TEC/RMS</b> maps: 2 (2-d) or 3 (3-d). <br>See <b>TEC VALUES</b> field. </ul> </li> <br> <li>Format: <ul>  I6 </ul></li>  </ul> ";	
+
+		
+		/* Line: HGT1 / HGT2 / DHGT */
+		var HGT1Tooltip ="<A class=\"TooltipTitle\"> Height Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in height. <br> The grid extends from HGT1 to HGT2 with increments of DHGT. <br> This field corresponds to <b> HGT1 </b> value. <br> See also <b>Base Radius</b> field.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  kilometers </ul></li> </ul> <br> <b>Note: For 2-dimensional maps, HGT1 = HGT2 and DHGT = 0.0 </b> ";
+
+		var HGT2Tooltip ="<A class=\"TooltipTitle\"> Height Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in height. <br> The grid extends from HGT1 to HGT2 with increments of DHGT. <br> This field corresponds to <b> HGT2 </b> value. <br> See also <b>Base Radius</b> field.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  kilometers </ul></li> </ul> <br> <b>Note: For 2-dimensional maps, HGT1 = HGT2 and DHGT = 0.0 </b> ";
+
+		var DHGTTooltip ="<A class=\"TooltipTitle\"> Height Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in height. <br> The grid extends from HGT1 to HGT2 with increments of DHGT. <br> This field corresponds to <b> DHGT </b> value. <br> See also <b>Base Radius</b> field.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  kilometers </ul></li> </ul> <br> <b>Note: For 2-dimensional maps, HGT1 = HGT2 and DHGT = 0.0 </b> ";
+
+		/* Line: LAT1 / LAT2 / DLAT */
+		var LAT1Tooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in latitude. <br> The grid extends from LAT1 to LAT2 with increments of DLAT. <br> This field corresponds to <b> LAT1 </b> value. <br> LAT1 has to be a multiple of <b>DLAT</b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		var LAT2Tooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in latitude. <br> The grid extends from LAT1 to LAT2 with increments of DLAT. <br> This field corresponds to <b> LAT2 </b> value. <br> LAT2 has to be a multiple of <b>DLAT</b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		var DLATTooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in latitude. <br> The grid extends from LAT1 to LAT2 with increments of DLAT. <br> This field corresponds to <b> DLAT </b> value. </ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		/* Line: LON1 / LON2 / DLON  */
+		var LON1Tooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in longitude. <br> The grid extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> LON1 </b> value. <br> LON1 has to be a multiple of <b>DLON</b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		var LON2Tooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in longitude. <br> The grid extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> LON2 </b> value. <br> LON2 has to be a multiple of <b>DLON</b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		var DLONTooltip ="<A class=\"TooltipTitle\"> Longitude Grid: </A> <ul> <li>Description: <ul>  Definition of an equidistiant grid in longitude. <br> The grid extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> DLON </b> value. </ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> <br> <li>Units:<ul>  degrees </ul></li> </ul> ";
+
+		/* Line: EXPONENT */ 
+		var ExponentTooltip ="<A class=\"TooltipTitle\"> Exponent: </A> <ul> <li>Description: <ul> Exponent defining the unit of the values listed in the following data blocks(s). <br> [DEFAULT] Exponent is -1 </ul> </li> <br> <li>Format: <ul>  I6 </ul></li>  </ul> ";
+		
+		/* Line: START OF AUX DATA */
+		var DCBStartLineTooltip = "<A class=\"TooltipTitle\">Start of Auxiliary Data: </A> <ul> <li>Description: <ul> Record opening general escape sequence that contains technique-related auxiliary data (e.g. Differential Code Biases for GPS).</ul> </li> <br> <li>Format:<ul>  A60 </ul></li></ul> <b>Note: Such data blocks may be skipped if you are interested in ionospheric information only.</b>";
+
+		/* Line: PRN / BIAS / RMS */ 
+		var PRNNumberDCBTooltip ="<A class=\"TooltipTitle\"> PRN: </A> <ul> <li>Description: <ul>  PRN (Satellite System Character + actual PRN) for which DCB are indicated next. </ul> </li> <br> <li>Format: <ul>  3X,A1,I2 </ul></li>  </ul> <br> <b>Note: This record is repeated for each satellite present in the data file.</b>"
+
+		var DCBTooltip ="<A class=\"TooltipTitle\"> Differential Code Bias: </A> <ul> <li>Description: <ul> The Differential (P1-P2) Code Biases (DCB) for the PRN listed. </ul> </li> <br> <li>Format: <ul>  F10.3 </ul></li>  <br> <li>Units:<ul>  Nanoseconds of delay in the geometry free combination. </ul></li> </ul> <br> <b>Note: This record is repeated for each satellite present in the data file.</b>"
+
+		var DCBRMSTooltip ="<A class=\"TooltipTitle\"> RMS Error for the DCB: </A> <ul> <li>Description: <ul> The RMS error for the Differential (P1-P2) Code Biases (DCB) for the PRN listed. </ul> </li> <br> <li>Format: <ul>  F10.3 </ul></li>  <br> <li>Units:<ul>  Nanoseconds of delay in the geometry free combination. </ul></li> </ul> <br> <b>Note: This record is repeated for each satellite present in the data file.</b>"
+
+		var SuspensivePointsTooltip = "To avoid a large example file, repetitive lines are omitted. ";
+
+		/* Line: END OF AUX DATA */
+		var DCBEndLineTooltip = "<A class=\"TooltipTitle\">End of Auxiliary Data: </A> <ul> <li>Description: <ul> Record closing auxiliary data block.</ul> </li> <br> <li>Format:<ul>  A60 </ul></li></ul> ";
+
+		/* Line: END OF HEADER */
+		var EndOfHeaderTooltip = "<A class=\"TooltipTitle\">End of Header Section: </A> <ul> <li>Description: <ul> Last Record of the header section.</ul> </li> <br> <li>Format:<ul>  60X </ul></li></ul> ";
+
+		/* Line: START OF TEC MAP */ 
+		var StartTECMapTooltip ="<A class=\"TooltipTitle\"> Start of TEC Maps: </A> <ul> <li>Description: <ul>  Record indicating the start of the i-th TEC map, where i=1,2,...,n denotes the internal number of the current map. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <br> <b>Note: All maps have to be ordered chronologically.</b>";
+		
+		/* Line: EPOCH OF CURRENT MAP */  
+		var CurrentYearObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Year </b> of current TEC map present in the file, in 4-digit-year. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		var CurrentMonthObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Month </b> of current TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		var CurrentDayObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Day </b> of current TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		var CurrentHourObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Hour </b> of current TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		var CurrentMinObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Minute </b> of current TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		var CurrentSecondObsTooltip ="<A class=\"TooltipTitle\"> Time of Current TEC Map (UT): </A> <ul> <li>Description: <ul>  <b> Second </b> of current TEC map present in the file. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <b>Note: Record 'EPOCH OF CURRENT MAP' must be specified at the first occurrence of the associated map.</b>";
+
+		/* Line: LAT/LON1/LON2/DLON/H */
+		var LAT1MapTooltip ="<A class=\"TooltipTitle\"> Initialization Record: </A> <ul> <li>Description: <ul>  Record initializing a new <b> TEC/RMS/HGT </b> data block for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> LAT1 </b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> </ul> <b>Note 1: In case of 2-dimensional maps, it is recommended  to define H = HGT1. <br> Note 2: Neither other types of records nor comment lines are allowed after this record and within the subsequent data block.</b>";
+
+		var LON1MapTooltip ="<A class=\"TooltipTitle\"> Initialization Record: </A> <ul> <li>Description: <ul>  Record initializing a new <b> TEC/RMS/HGT </b> data block for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> LON1 </b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> </ul> <b>Note 1: In case of 2-dimensional maps, it is recommended  to define H = HGT1. <br> Note 2: Neither other types of records nor comment lines are allowed after this record and within the subsequent data block.</b>";
+
+		var LON2MapTooltip ="<A class=\"TooltipTitle\"> Initialization Record: </A> <ul> <li>Description: <ul>  Record initializing a new <b> TEC/RMS/HGT </b> data block for a given latitude <b> LAT </b> and a given height <b> HGT </b>. <br> The data block extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> LON2 </b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> </ul> <b>Note 1: In case of 2-dimensional maps, it is recommended  to define H = HGT1. <br> Note 2: Neither other types of records nor comment lines are allowed after this record and within the subsequent data block.</b>";
+
+		var DLONMapTooltip ="<A class=\"TooltipTitle\"> Initialization Record: </A> <ul> <li>Description: <ul>  Record initializing a new <b> TEC/RMS/HGT </b> data block for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> DLON </b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> </ul> <b>Note 1: In case of 2-dimensional maps, it is recommended  to define H = HGT1. <br> Note 2: Neither other types of records nor comment lines are allowed after this record and within the subsequent data block.</b>";
+
+		var HGTMapTooltip ="<A class=\"TooltipTitle\"> Initialization Record: </A> <ul> <li>Description: <ul>  Record initializing a new <b> TEC/RMS/HGT </b> data block for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. <br> This field corresponds to <b> HGT </b> value.</ul> </li> <br> <li>Format: <ul>  F6.1 </ul></li> </ul> <b>Note 1: In case of 2-dimensional maps, it is recommended  to define H = HGT1. <br> Note 2: Neither other types of records nor comment lines are allowed after this record and within the subsequent data block.</b>";
+
+		/* Line: LAT/LON1/LON2/DLON/H Values*/
+		var TECMapValuesTooltip ="<A class=\"TooltipTitle\">TEC Map Values: </A> <ul> <li>Description: <ul>  Data block of the current Total Electron Content (TEC) map for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. </ul> </li> <br> <li>Format: <ul>  I5 </ul></li> <br> <li>Units:<ul>  <b>TEC</b> values in 0.1 TECU (Total Electron Content Units). <br>Non-available TEC values are written as '9999'. <br> If an exponent <b>k</b> is specified, the TEC values are given in units <b>10**k</b> TECU: <br> [DEFAULT] Exponent is -1. </ul></li></ul> <b>Note 1: If 3-dimensional maps are provided, TEC values should correspond to the surface electron densities at the grid points times 'DHGT'. That means you can derive the surface electron densities integrated over voxels (volume elements), you should ensure that the height grid specified in 'HGT1 / HGT2 / DHGT' field refers to the height of the voxel centers. <br> Note 2: After 16 values per latitude band continue values in next data record. </b>";
+
+		/* Line: END OF TEC MAP */ 
+		var EndTECMapTooltip ="<A class=\"TooltipTitle\"> End of TEC Maps: </A> <ul> <li>Description: <ul>  Record indicating the end of the i-th TEC map: See <b>START OF TEC MAP</b> field. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: START OF RMS MAP */ 
+		var StartRMSMapTooltip ="<A class=\"TooltipTitle\"> Start of RMS Maps: </A> <ul> <li>Description: <ul>  Record indicating the start of an RMS map related to the i-th TEC map. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <br> <b>Note: All maps have to be ordered chronologically.</b>";
+
+		/* Line: LAT/LON1/LON2/DLON/H Values*/
+		var RMSMapValuesTooltip ="<A class=\"TooltipTitle\">RMS Map Values: </A> <ul> <li>Description: <ul>  Data block of the current RMS of the Total Electron Content (TEC) map for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. </ul> </li> <br> <li>Format: <ul>  I5 </ul></li> <br> <li>Units:<ul>  RMS values are formatted exactly in the same way as TEC values: <br> <b>TEC</b> values in 0.1 TECU (Total Electron Content Units). <br>Non-available TEC values are written as '9999'. <br> If an exponent <b>k</b> is specified, the TEC values are given in units <b>10**k</b> TECU: <br> [DEFAULT] Exponent is -1. </ul></li></ul> <b>Note: After 16 values per latitude band continue values in next data record.</b>";
+
+		/* Line: END OF RMS MAP */ 
+		var EndRMSMapTooltip ="<A class=\"TooltipTitle\"> End of RMS Maps: </A> <ul> <li>Description: <ul>  Record indicating the end an RMS map. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: START OF HEIGHT MAP */ 
+		var StartHGTMapTooltip ="<A class=\"TooltipTitle\"> Start of HGT Maps: </A> <ul> <li>Description: <ul>  Record indicating the start of an HGT map related to the i-th TEC map. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> <br> <b>Note: All maps have to be ordered chronologically.</b>";
+
+		var HGTMapValuesTooltip ="<A class=\"TooltipTitle\">HGT Map Values: </A> <ul> <li>Description: <ul>  Data block of the current HGT of the Total Electron Content (TEC) map for a given latitude <b> LAT </b> and a given height <b> HGT</b>. <br> The data block extends from LON1 to LON2 with increments of DLON. </ul> </li> <br> <li>Format: <ul>  I5 </ul></li> <br> <li>Units:<ul>  RMS values are formatted exactly in the same way as TEC values: <br> If an exponent <b>k</b> is specified, the HGT values are given in units <b>10**k</b> km: <br> [DEFAULT] Exponent is -1: in this case the unit corresponds to 0.1 km. <br> The actual heights (with respecte to the <b> BASE RADIUS </b> field are computed as the sum of <b>HGT1</b> and <b>HGT VALUES</b> . </ul></li></ul> <b>Note: After 16 values per latitude band continue values in next data record.</b>";
+
+		/* Line: END OF HEIGHT MAP */ 
+		var EndHGTMapTooltip ="<A class=\"TooltipTitle\"> End of HGT Maps: </A> <ul> <li>Description: <ul>  Record indicating the end an HGT map. </ul> </li> <br> <li>Format:<ul>  I6 </ul></li>  </ul> ";
+
+		/* Line: END OF FILE */
+		var EndOfFileTooltip = "<A class=\"TooltipTitle\">End of File: </A> <ul> <li>Description: <ul> Last Record closing the IONEX file.</ul> </li> <br> <li>Format:<ul>  60X </ul></li></ul> ";
+	// --->
+	</SCRIPT> 
+
+</HEAD>
+
+<!-- The body of the page -->
+<BODY>
+
+	<!-- Include tooltips -->
+	<SCRIPT type="text/javascript" src="Tooltips/wz_tooltip.js"></SCRIPT>
+
+	<!-- Title -->
+	<H1 NAME="TOP OF PAGE" onmouseover="Tip(RINEXTooltip)" onmouseout="UnTip()">IONEX 1.0 Format</H1>
+
+
+	<!-- RINEX HEADER SECTION-->
+	<!-- Line: RINEX VERSION / TYPE -->
+	<A class="BodyText"  onmouseover="Tip(VersionTooltip)" 		onmouseout="UnTip()">     1.0            </A><!--
+     --><A class="BodyText" onmouseover="Tip(FileTypeTooltip)"        	onmouseout="UnTip()">IONOSPHERE MAPS     </A><!--
+     --><A class="BodyText" onmouseover="Tip(SatelliteSystemTooltip)" 	onmouseout="UnTip()">GPS                 </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">IONEX VERSION / TYPE</A><!--
+     --><br>
+	<!-- Line: COMMENT
+     --><A class="BodyText" onmouseover="Tip(CommentTooltip)" 			onmouseout="UnTip()">BLANK OR G = GPS,  R = GLONASS,  E = GALILEO,  M = MIXED    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: PGM / RUN BY / DATE -->
+	<A class="BodyText" onmouseover="Tip(PGMTooltip)" 		onmouseout="UnTip()">gLAB                </A><!--
+     --><A class="BodyText" onmouseover="Tip(RunByTooltip)" 		onmouseout="UnTip()">gAGE / UPC          </A><!--
+     --><A class="BodyText" onmouseover="Tip(DateTooltip)" 		onmouseout="UnTip()"> 17-MAR-10 12:14    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">PGM / RUN BY / DATE </A><!--
+     --><br>
+	<!-- Line: DESCRIPTION  --> 
+	<A class="BodyText" onmouseover="Tip(DescriptionTooltip)"        	  onmouseout="UnTip()">GLOBAL IONOSPHERE MAP FOR DAY 288 OF YEAR 1995              </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	  onmouseout="UnTip()">DESCRIPTION         </A><!--
+     --><br>
+	<!-- Line: DESCRIPTION  --> 
+	<A class="BodyText" onmouseover="Tip(DescriptionTooltip)"     		  onmouseout="UnTip()">SPHERICAL HARMONICS ARE USED IN THIS MODEL                  </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	  onmouseout="UnTip()">DESCRIPTION         </A><!--
+     --><br>
+	<!-- Line: COMMENT : gLAB / gAGE 1 -->
+	<A class="BodyText" onmouseover="Tip(gLABgAGETooltip)" 		    onmouseout="UnTip()">THIS EXAMPLE OF IONEX FILE IS PART OF THE gLAB TOOL SUITE   </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: COMMENT : gLAB / gAGE 2 -->
+	<A class="BodyText" onmouseover="Tip(gLABgAGETooltip)"   	    onmouseout="UnTip()">FILE PREPARED BY: ADRIA ROVIRA GARCIA                       </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: COMMENT : gLAB / gAGE 3 -->
+	<A class="BodyText" onmouseover="Tip(gLABgAGETooltip)" 		    onmouseout="UnTip()">PLEASE EMAIL ANY COMMENT OR REQUEST TO:   glab @ gage.es    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: EPOCH OF FIRST MAP -->
+	<A class="BodyText" onmouseover="Tip(FirstYearObsTooltip)" 		onmouseout="UnTip()">  1995</A><!--
+     --><A class="BodyText" onmouseover="Tip(FirstMonthObsTooltip)" 		onmouseout="UnTip()">    10</A><!--
+     --><A class="BodyText" onmouseover="Tip(FirstDayObsTooltip)" 		onmouseout="UnTip()">    15</A><!--
+     --><A class="BodyText" onmouseover="Tip(FirstHourObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(FirstMinObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(FirstSecondObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                        </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">EPOCH OF FIRST MAP  </A><!--
+     --><br>
+	<!-- Line: EPOCH OF LAST MAP -->
+	<A class="BodyText" onmouseover="Tip(LastYearObsTooltip)" 		onmouseout="UnTip()">  1995</A><!--
+     --><A class="BodyText" onmouseover="Tip(LastMonthObsTooltip)" 		onmouseout="UnTip()">    10</A><!--
+     --><A class="BodyText" onmouseover="Tip(LastDayObsTooltip)" 		onmouseout="UnTip()">    16</A><!--
+     --><A class="BodyText" onmouseover="Tip(LastHourObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(LastMinObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(LastSecondObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                        </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">EPOCH OF LAST MAP   </A><!--
+     --><br>
+	<!-- Line: INTERVAL -->
+	<A class="BodyText" onmouseover="Tip(IntervalTooltip)" 			onmouseout="UnTip()"> 21600</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">INTERVAL            </A><!--
+     --><br>
+	<!-- Line: # OF MAPS IN FILE  -->
+	<A class="BodyText" onmouseover="Tip(MapNumberTooltip)" 		onmouseout="UnTip()">     5</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)"		onmouseout="UnTip()"># OF MAPS IN FILE   </A><!--
+     --><br>
+	<!-- Line: MAPPING FUNCTION -->                    
+	<A class="BodyText" onmouseover="Tip(AntTooltip)" 	     onmouseout="UnTip()">  </A><!--
+     --><A class="BodyText" onmouseover="Tip(MapFunctTooltip)" 	     onmouseout="UnTip()">COSZ</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"     onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)"  onmouseout="UnTip()">MAPPING FUNCTION    </A><!--
+     --><br>
+	<!-- Line: ELEVATION CUTOFF --> 
+	<A class="BodyText" onmouseover="Tip(ElevCutTooltip)"       onmouseout="UnTip()">    20.0</A><!--  
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                                                    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" onmouseout="UnTip()">ELEVATION CUTOFF    </A><!--
+     --><br>	
+	<!-- Line: OBSERVABLES USED -->
+	<A class="BodyText" onmouseover="Tip(ObserUsedTooltip)"     onmouseout="UnTip()">DOUBLE-DIFFERENCES CARRIER PHASE                            </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" onmouseout="UnTip()">OBSERVABLES USED    </A><!--
+     --><br>
+	<!-- Line: # OF STATIONS  -->
+	<A class="BodyText" onmouseover="Tip(NumberOfStatsTooltip)" 		onmouseout="UnTip()">    80</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()"># OF STATIONS       </A><!--
+     --><br>
+	<!-- Line: # OF SATELLITES  -->
+	<A class="BodyText" onmouseover="Tip(NumberOfSatsTooltip)" 		onmouseout="UnTip()">    24</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()"># OF SATELLITES     </A><!--
+     --><br>
+	<!-- Line: BASE RADIUS --> 
+	<A class="BodyText" onmouseover="Tip(BaseRadiusTooltip)"    onmouseout="UnTip()">  6371.0</A><!--  
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                                                    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" onmouseout="UnTip()">BASE RADIUS         </A><!--
+     --><br>
+	<!-- Line: MAP DIMENSION  -->
+	<A class="BodyText" onmouseover="Tip(MapDimensionTooltip)" 		onmouseout="UnTip()">     3</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">MAP DIMENSION       </A><!--
+     --><br>
+	<!-- Line: HGT1 / HGT2 / DHGT -->
+	<A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">  </A><!--
+     --><A class="BodyText" onmouseover="Tip(HGT1Tooltip)" 			onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(HGT2Tooltip)" 			onmouseout="UnTip()"> 800.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(DHGTTooltip)" 			onmouseout="UnTip()">  50.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">HGT1 / HGT2 / DHGT  </A><!--
+     --><br>
+	<!-- Line: LAT1 / LAT2 / DLAT -->
+	<A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">  </A><!--
+     --><A class="BodyText" onmouseover="Tip(LAT1Tooltip)"			onmouseout="UnTip()">  85.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(LAT2Tooltip)" 			onmouseout="UnTip()"> -85.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(DLATTooltip)" 			onmouseout="UnTip()">  -5.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">LAT1 / LAT2 / DLAT  </A><!--
+     --><br>
+	<!-- Line: LON1 / LON2 / DLON -->
+	<A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">  </A><!--
+     --><A class="BodyText" onmouseover="Tip(LON1Tooltip)" 			onmouseout="UnTip()">   0.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(LON2Tooltip)" 			onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(DLONTooltip)" 			onmouseout="UnTip()">   5.0</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelTooltip)" 		onmouseout="UnTip()">LON1 / LON2 / DLON  </A><!--
+     --><br>
+	<!-- Line: EXPONENT  -->
+	<A class="BodyText" onmouseover="Tip(ExponentTooltip)" 			onmouseout="UnTip()">    -3</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">EXPONENT            </A><!--
+     --><br>
+	<!-- Line: START OF AUX DATA  --> 
+	<A class="BodyText" onmouseover="Tip(DCBStartLineTooltip)"         	  onmouseout="UnTip()">DIFFERENTIAL CODE BIASES                                    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	  onmouseout="UnTip()">START OF AUX DATA   </A><!--
+     --><br>
+	<!-- Line: PRN / BIAS / RMS -->
+	<A class="BodyText" onmouseover="Tip(PRNNumberDCBTooltip)"      	onmouseout="UnTip()">   G01</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBTooltip)" 			onmouseout="UnTip()">     1.311</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBRMSTooltip)" 			onmouseout="UnTip()">     0.394</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                  </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	onmouseout="UnTip()">PRN / BIAS / RMS    </A><!--
+     --><br>
+	<!-- Line: PRN / BIAS / RMS -->
+	<A class="BodyText" onmouseover="Tip(PRNNumberDCBTooltip)"    		onmouseout="UnTip()">   G02</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBTooltip)" 			onmouseout="UnTip()">     5.279</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBRMSTooltip)" 			onmouseout="UnTip()">     0.167</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                  </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	onmouseout="UnTip()">PRN / BIAS / RMS    </A><!--
+     --><br>
+	<!-- Line: PRN / BIAS / RMS -->
+        <A class="BodyText"   onmouseover="Tip(SuspensivePointsTooltip)" 	onmouseout="UnTip()">...                                                         </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	onmouseout="UnTip()">PRN / BIAS / RMS    </A><!--
+     --><br>
+	<!-- Line: PRN / BIAS / RMS -->
+	<A class="BodyText" onmouseover="Tip(PRNNumberDCBTooltip)"    		onmouseout="UnTip()">   G31</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBTooltip)" 			onmouseout="UnTip()">    -0.637</A><!--
+     --><A class="BodyText" onmouseover="Tip(DCBRMSTooltip)" 			onmouseout="UnTip()">     0.213</A><!--
+     --><A class="BodyText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                  </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	onmouseout="UnTip()">PRN / BIAS / RMS    </A><!--
+     --><br>
+	<!-- Line: COMMENT
+     --><A class="BodyText" onmouseover="Tip(CommentTooltip)" 			onmouseout="UnTip()">P1 - P2 DIFFERENTIAL CODE BIASES (DCB)                      </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: COMMENT
+     --><A class="BodyText" onmouseover="Tip(CommentTooltip)" 			onmouseout="UnTip()">BIASES & RMS UNITS: NANOSECS OF DELAY IN GEOMETRY FREE COMB.</A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: COMMENT
+     --><A class="BodyText" onmouseover="Tip(CommentTooltip)" 			onmouseout="UnTip()">THE SUM OF BIASES IS CONTRAINED TO ZERO                     </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">COMMENT             </A><!--
+     --><br>
+	<!-- Line: END OF AUX DATA  --> 
+	<A class="BodyText" onmouseover="Tip(DCBEndLineTooltip)"          	onmouseout="UnTip()">DIFFERENTIAL CODE BIASES                                    </A><!--
+     --><A class="HeaderText" onmouseover="Tip(HeaderLabelOptionalTooltip)"	onmouseout="UnTip()">END OF AUX DATA     </A><!--
+     --><br>
+	<!-- Line: END OF HEADER -->
+	<A class="BodyText" 	onmouseover="Tip(EndOfHeaderTooltip)" onmouseout="UnTip()">                                                            </A><!--
+     --><A class="HeaderText" 	onmouseover="Tip(HeaderLabelTooltip)" onmouseout="UnTip()">END OF HEADER       </A><!--
+     --><br>
+	
+	<!-- IONEX DATA - DATA RECORD DESCRIPTION -->
+	<!-- Line: START OF TEC MAP -->
+	<A class="ObsDataText" 		onmouseover="Tip(StartTECMapTooltip)" 		onmouseout="UnTip()">     1</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">START OF TEC MAP    </A><!--
+     --><br>
+	<!-- Line: EPOCH OF CURRENT MAP -->
+	<A class="ObsDataText" onmouseover="Tip(CurrentYearObsTooltip)" 	onmouseout="UnTip()">  1995</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(CurrentMonthObsTooltip)" 	onmouseout="UnTip()">    10</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(CurrentDayObsTooltip)" 		onmouseout="UnTip()">    15</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(CurrentHourObsTooltip)" 	onmouseout="UnTip()">     0</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(CurrentMinObsTooltip)" 		onmouseout="UnTip()">     0</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(CurrentSecondObsTooltip)" 	onmouseout="UnTip()">     0</A><!--
+     --><A class="ObsDataText" onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                        </A><!--
+     --><A class="FirstHeaderText" onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">EPOCH OF CURRENT MAP</A><!--
+     --><br>
+	<!-- Line: EXPONENT  -->
+	<A class="ObsDataText" 		onmouseover="Tip(ExponentTooltip)" 		onmouseout="UnTip()">    -3</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">EXPONENT            </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 	onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LAT1MapTooltip)"	onmouseout="UnTip()">  85.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON1MapTooltip)" 	onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON2MapTooltip)" 	onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(DLONMapTooltip)" 	onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(HGTMapTooltip)" 	onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                            </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 	onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LAT1MapTooltip)"	onmouseout="UnTip()">  80.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON1MapTooltip)" 	onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON2MapTooltip)" 	onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(DLONMapTooltip)" 	onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(HGTMapTooltip)" 	onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                            </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText" 		onmouseover="Tip(SuspensivePointsTooltip)" onmouseout="UnTip()">...                                                                             </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 	onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LAT1MapTooltip)"	onmouseout="UnTip()"> -85.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON1MapTooltip)" 	onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(LON2MapTooltip)" 	onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(DLONMapTooltip)" 	onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(HGTMapTooltip)" 	onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                            </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText"		onmouseover="Tip(TECMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: END OF TEC MAP -->
+	<A class="ObsDataText" 		onmouseover="Tip(EndTECMapTooltip)" 		onmouseout="UnTip()">     5</A><!--
+     --><A class="ObsDataText" 		onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="FirstHeaderText" 	onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">END OF TEC MAP      </A><!--
+     --><br>
+
+
+
+	<!-- Line: START OF RMS MAP -->
+	<A class="ObsDataText2" 		onmouseover="Tip(StartRMSMapTooltip)" 		onmouseout="UnTip()">     1</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="SecondHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">START OF RMS MAP    </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)" 	 		onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LAT1MapTooltip)"			onmouseout="UnTip()">  85.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON1MapTooltip)"	 		onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON2MapTooltip)" 	 		onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(DLONMapTooltip)" 	 		onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(HGTMapTooltip)" 	 		onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)"                	onmouseout="UnTip()">                            </A><!--
+     --><A class="SecondHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 	    	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)" 	 		onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LAT1MapTooltip)"			onmouseout="UnTip()">  80.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON1MapTooltip)"	 		onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON2MapTooltip)" 	 		onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(DLONMapTooltip)" 	 		onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(HGTMapTooltip)" 	 		onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)"                	onmouseout="UnTip()">                            </A><!--
+     --><A class="SecondHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 	    	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText2" 		onmouseover="Tip(SuspensivePointsTooltip)" onmouseout="UnTip()">...                                                                             </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)" 	 		onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LAT1MapTooltip)"			onmouseout="UnTip()"> -85.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON1MapTooltip)"	 		onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(LON2MapTooltip)" 	 		onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(DLONMapTooltip)" 	 		onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(HGTMapTooltip)" 	 		onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText2" 		onmouseover="Tip(EmptyFieldTooltip)"                	onmouseout="UnTip()">                            </A><!--
+     --><A class="SecondHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 	    	onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(RMSMapValuesTooltip)" onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText2"		onmouseover="Tip(EmptyFieldTooltip)"                onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: END OF RMS MAP -->
+	<A class="ObsDataText2" 	onmouseover="Tip(EndRMSMapTooltip)" 		onmouseout="UnTip()">     5</A><!--
+     --><A class="ObsDataText2" 	onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="SecondHeaderText" 	onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">END OF RMS MAP      </A><!--
+     --><br>
+
+
+	<!-- Line: START OF HEIGHT MAP -->
+	<A class="ObsDataText3" 		onmouseover="Tip(StartHGTMapTooltip)" 		onmouseout="UnTip()">     1</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="ThirdHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">START OF HEIGHT MAP </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)" 			onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LAT1MapTooltip)" 			onmouseout="UnTip()">  85.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON1MapTooltip)" 			onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON2MapTooltip)" 			onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(DLONMapTooltip)"			onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(HGTMapTooltip)" 			onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)"       	        onmouseout="UnTip()">                            </A><!--
+     --><A class="ThirdHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 		onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)" 			onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LAT1MapTooltip)" 			onmouseout="UnTip()">  80.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON1MapTooltip)" 			onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON2MapTooltip)" 			onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(DLONMapTooltip)"			onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(HGTMapTooltip)" 			onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)"       	        onmouseout="UnTip()">                            </A><!--
+     --><A class="ThirdHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 		onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText3" 		onmouseover="Tip(SuspensivePointsTooltip)" onmouseout="UnTip()">...                                                                             </A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H -->
+	<A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)" 			onmouseout="UnTip()">  </A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LAT1MapTooltip)" 			onmouseout="UnTip()"> -85.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON1MapTooltip)" 			onmouseout="UnTip()">   0.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(LON2MapTooltip)" 			onmouseout="UnTip()"> 355.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(DLONMapTooltip)"			onmouseout="UnTip()">   5.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(HGTMapTooltip)" 			onmouseout="UnTip()"> 200.0</A><!--
+     --><A class="ObsDataText3" 		onmouseover="Tip(EmptyFieldTooltip)"       	        onmouseout="UnTip()">                            </A><!--
+     --><A class="ThirdHeaderText" 		onmouseover="Tip(HeaderLabelOptionalTooltip)" 		onmouseout="UnTip()">LAT/LON1/LON2/DLON/H</A><!--
+     --><br>
+	<!-- Line: LAT/LON1/LON2/DLON/H VALUES -->
+	<A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)"	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000</A><br><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(HGTMapValuesTooltip)" 	onmouseout="UnTip()"> 1000 1000 1000 1000 1000 1000 1000 1000</A><!--
+     --><A class="ObsDataText3"		onmouseover="Tip(EmptyFieldTooltip)"    onmouseout="UnTip()">                                        </A><!--
+     --><br>
+	<!-- Line: END OF RMS MAP -->
+	<A class="ObsDataText3" 	onmouseover="Tip(EndHGTMapTooltip)" 		onmouseout="UnTip()">     5</A><!--
+     --><A class="ObsDataText3" 	onmouseover="Tip(EmptyFieldTooltip)" 		onmouseout="UnTip()">                                                      </A><!--
+     --><A class="ThirdHeaderText" 	onmouseover="Tip(HeaderLabelOptionalTooltip)" 	onmouseout="UnTip()">END OF HEIGHT MAP   </A><!--
+     --><br>
+
+	<!-- Line: END OF FILE -->
+        <A class="BodyText" 	onmouseover="Tip(EndOfFileTooltip)" 		onmouseout="UnTip()">                                                            </A><!--
+     --><A class="HeaderText" 	onmouseover="Tip(HeaderLabelTooltip)" 	onmouseout="UnTip()">END OF FILE         </A><!--
+     --><br><br>
+	<!-- End of information -->	
+	<H1>End of IONEX 1.0 Format</H1>
+	<HR>
+	<HR width="80%">
+	<HR width="60%">
+	<HR width="40%">
+	<HR width="20%">
+
+</BODY>
+
+</HTML> 
+
