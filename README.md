@@ -9,7 +9,7 @@ Therefore, in order to create a straightfoward path to use gLAB with the computa
 ## Installing
 
 - To install `glab`, run `./install.sh`. It should generate `gLAB_linux` and `gLAB_linux_multithread`.
-- For 64-bits arch, use `gLAB_GUI_64` for gLAB or `gLAB_linux` for command line version.
+- Use `gLAB_GUI_64` for gLAB with GUI (on a 64-bits computer architecture) or `gLAB_linux` for command line version.
 
 ## Directory structure
 
