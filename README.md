@@ -18,7 +18,6 @@ Therefore, in order to create a straightfoward path to use gLAB with the computa
 ## Directory structure
 
 - `FILES/`: Contains the backup gzip files for each tutorial in `TUTX/`. You should not remove these files as `ntpd_tutX.sh` decompresses them to create new `WORK/TUTX/` directories with the simulation results.
-- `HTML/`:
 - `PROG/`:
   - Contains the core source code for gLAB (`src/gLAB_src/`, in C), in addition to Fortran77 (in `src/F77_src/`) and Octave/Matlab (in `src/OCT_src`) for implementation of a more elaborated task.
   - Each `TUTX/` directory just contains configuration plus symlink to gLAB executable.
