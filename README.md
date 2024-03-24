@@ -1,7 +1,10 @@
 # glab
-Interactive educational multipurpose package to process and analyse GNSS data. It contains:
-- The gLAB version 5.5.1. At the time I am writing it, it is the newest version. You can find all versions [here].
-- Tutorial homeworks, which was obtained from previous versions of gLAB and integrated to v5.5.1.
+
+Interactive educational multipurpose package to process and analyse GNSS data. 
+
+**Context**: The gLAB installation process is not an easy task. On the one hand, the GUI part of [the gLAB version availabe along with the GNSS tutorial material (v5.2.0)][1] didn't work on Linux, but it contains the computational homeworks. On the other hand, the latest version of gLAB at the time of writing it (v5.5.1) worked perfectly on Linux, but it didn't have the computational homeworks, only the source code. Moreover, the directory structure of both versions is completely different. You can find the download link for all gLAB versions [here][6].
+  
+Therefore, in order to create a straightfoward path to use gLAB with the computation homeworks, I've created a git submodule at `./gLAB/`, which contains both the version v5.5.1 for Linux and the tutorial material. In the future, newer versions may be easier to install it and `./gLAB/` will no longer be necessary.
 
 ## Installing
 
@@ -29,3 +32,5 @@ Interactive educational multipurpose package to process and analyse GNSS data. I
 - `ntpd_tutX.sh`: Unix Shell script to run tutorial X. It basically creates `WORK/TUTX/`, and copies the config files from `PROG/TUTX/` and data files from `FILES/TUTX/` to it.
 
 [here]: https://gage.upc.edu/en/learning-materials/software-tools/glab-tool-suite-links/glab-download
+[1]: https://gage.upc.edu/486/gage/en/en/learning-materials/software-tools/glab-tool-suite-links/glab-tutorials/gnss-tutorials
+[6]: https://gage.upc.edu/en/learning-materials/software-tools/glab-tool-suite-links/glab-download
