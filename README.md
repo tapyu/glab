@@ -10,7 +10,7 @@ Therefore, in order to create a straightfoward path to use gLAB with the computa
 - The `tutorials` branch contains the computational homeworks that were retreived in previous version of gLAB.
 - The `main` branch contains both contents plus `install.sh`, which is used to install it seamlessly.
 
-## Installing
+## Installing and usage
 
 - To install `glab`, run `./install.sh`. It should generate `gLAB_linux` and `gLAB_linux_multithread`. If it doesn't work, see `README_install.txt`.
 - Use `gLAB_GUI_64` for gLAB with GUI (on a 64-bits computer architecture) or `gLAB_linux` for the command line approach.
