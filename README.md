@@ -8,7 +8,7 @@ Therefore, in order to create a straightfoward path to use gLAB with the computa
 
 - The `source-code-v5.5.1` branch contains the source code for gLAB version v5.5.1, but with a minor correction in the `Makefile` (see its `README.md`)
 - The `tutorials` branch contains the computational homeworks that were retreived in previous version of gLAB.
-- The `main` branch contains both contents plus `install.sh`, which is used to install is seamlessly.
+- The `main` branch contains both contents plus `install.sh`, which is used to install it seamlessly.
 
 ## Installing
 
