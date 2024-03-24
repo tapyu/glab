@@ -6,7 +6,7 @@ Interactive educational multipurpose package to process and analyse GNSS data.
   
 Therefore, in order to create a straightfoward path to use gLAB with the computation homeworks, I've created this repository, which contains both the version v5.5.1 for Linux and the tutorial material. In the future, newer versions may be easier to install it and this repo will no longer be necessary.
 
-- The `source-code-v5.5.1` branch contains the source code for gLAB version v5.5.1, but it a minor correction in the `Makefile` (see its `README.md`)
+- The `source-code-v5.5.1` branch contains the source code for gLAB version v5.5.1, but with a minor correction in the `Makefile` (see its `README.md`)
 - The `tutorials` branch contains the computational homeworks that were retreived in previous version of gLAB.
 - The `main` branch contains both contents plus `install.sh`, which is used to install is seamlessly.
 
