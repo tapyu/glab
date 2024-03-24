@@ -4,7 +4,7 @@ Interactive educational multipurpose package to process and analyse GNSS data.
 
 **Context**: The gLAB installation process is not an easy task. On the one hand, the GUI part of [the gLAB version availabe along with the GNSS tutorial material (v5.2.0)][1] didn't work on Linux, but it contains the computational homeworks. On the other hand, the latest version of gLAB at the time of writing it (v5.5.1) worked perfectly on Linux, but it didn't have the computational homeworks, only the source code. Moreover, the directory structure of both versions is completely different. You can find the download link for all gLAB versions [here][6].
   
-Therefore, in order to create a straightfoward path to use gLAB with the computation homeworks, I've created a git submodule at `./gLAB/`, which contains both the version v5.5.1 for Linux and the tutorial material. In the future, newer versions may be easier to install it and `./gLAB/` will no longer be necessary.
+Therefore, in order to create a straightfoward path to use gLAB with the computation homeworks, I've created this repository, which contains both the version v5.5.1 for Linux and the tutorial material. In the future, newer versions may be easier to install it and this repo will no longer be necessary.
 
 ## Installing
 
