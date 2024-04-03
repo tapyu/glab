@@ -2,13 +2,15 @@
 
 Interactive educational multipurpose package to process and analyse GNSS data. 
 
-**Context**: The gLAB installation process is not an easy task. On the one hand, the GUI part of [the gLAB version availabe along with the GNSS tutorial material (v5.2.0)][1] didn't work on Linux, but it contains the computational homeworks. On the other hand, the latest version of gLAB at the time of writing it (v5.5.1) worked perfectly on Linux, but it didn't have the computational homeworks, only the source code. Moreover, the directory structure of both versions is completely different. You can find the download link for all gLAB versions [here][6].
-  
-Therefore, in order to create a straightfoward path to use gLAB with the computation homeworks, I've created this repository, which contains both the version v5.5.1 for Linux and the tutorial material. In the future, newer versions may be easier to install it and this repo will no longer be necessary.
+**Context**: any version of the gLAB software can be downloaded [here][6]. However, in none of these links you will obtain the tutorial datafiles. Such a material is packaged in the [GNSS tutoral link][1], together with the gLAB source code in a tarball file (see `Software and Data Files [Linux]` for Linux). On the one hand, at the time I am writing it (April 2024) , the gLAB source code packaged in this tarball is the version 5.2, which didn't work on Linux. On the other hand, the latest version of gLAB at the time of writing it (v5.5.1) worked perfectly on Linux.
 
-- The `source-code-v5.5.1` branch contains the source code for gLAB version v5.5.1, but with a minor correction in the `Makefile` (see its `README.md`)
-- The `tutorials` branch contains the computational homeworks that were retreived in previous version of gLAB.
-- The `main` branch contains both contents plus `install.sh`, which is used to install it seamlessly.
+Therefore, in order to create a straightfoward path to use any gLAB version with the computation homeworks, I've created this repository, which contains both the version v5.5.1 for Linux and the tutorial material.
+
+## Branches
+
+- `source-code-v5.5.1`: contains the source code for gLAB version v5.5.1, but with a minor correction in the `Makefile` (see its `README.md`)
+- `tutorials`: contains the computational homeworks that were retreived in previous version of gLAB.
+- `main`: contains both contents plus `install.sh`, which is used to install it seamlessly.
 
 ## Installing and usage
 
