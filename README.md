@@ -1,6 +1,6 @@
 # gLAB
 
-Interactive educational multipurpose package to process and analyse GNSS data. 
+Interactive educational multipurpose package to process and analyse GNSS data, i.e., a GNSS positioning simulator.
 
 **Context**: any version of the gLAB software can be downloaded [here][6]. However, in none of these links you will obtain the tutorial datafiles. Such a material is packaged in the [GNSS tutoral link][1], together with the gLAB source code in a tarball file (see `Software and Data Files [Linux]` for Linux). On the one hand, at the time I am writing it (April 2024) , the gLAB source code packaged in this tarball is the version 5.2, which didn't work on Linux. On the other hand, the latest version of gLAB at the time of writing it (v5.5.1) worked perfectly on Linux.
 
