@@ -1,6 +1,6 @@
 # Tutorials
 
-This branch contains the tutorial datafiles contained in the [GNSS tutorial link][1] (see `Software and Data Files [Linux]`). At the time I am writing it, at least, it contains gLAB v5.2 + Datafiles, and is used for education purposes. Here, I separed only the datafiles so that the tutorial datafiles be used with any gLAB version.
+This branch contains the tutorial datafiles contained in the [GNSS tutorial link][1] (see `Software and Data Files [Linux]`). At the time I am writing it, it contains gLAB v5.2 + Datafiles, and is used for education purposes. Here, I separed only the datafiles so that the tutorial datafiles be used with any gLAB version.
 
 ## Directory structure
 
